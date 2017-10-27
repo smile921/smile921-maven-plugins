@@ -18,3 +18,4 @@
 			</plugin>
 ```			
 ###  使用 mvn clean smile921:genrepo
+> mvn clean dependency:copy-dependencies -Dmdep.useRepositoryLayout=true -Dmdep.addParentPoms=true -Dmdep.copyPom=true
