@@ -10,13 +10,12 @@ import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.dependency.fromDependencies.AbstractFromDependenciesMojo;
 import org.apache.maven.plugins.dependency.utils.DependencyStatusSets;
 import org.apache.maven.plugins.dependency.utils.DependencyUtil;
@@ -32,7 +31,8 @@ import org.apache.maven.shared.artifact.resolve.ArtifactResolverException;
  * @author frere
  *
  */
-@Mojo(name = "genrepo", defaultPhase = LifecyclePhase.PROCESS_SOURCES)
+@Mojo(name = "genrepo", requiresDependencyResolution = ResolutionScope.TEST, // 影响的是 getProject().getArtifacts()的结果
+		defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
 public class GenRepoMojo extends AbstractFromDependenciesMojo {
 
 	@Parameter(defaultValue = "repo", property = "repo", required = false)
@@ -108,7 +108,13 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 				+ addParentPoms);
 		DependencyStatusSets dss = getDependencySets(this.failOnMissingClassifierArtifact, addParentPoms);
 		Set<Artifact> artifacts = dss.getResolvedDependencies();
-		getLog().info("dependencies total is " + artifacts.size());
+		getLog().info("dependencies total is " + artifacts.size() + " , unresolved " + dss.getUnResolvedDependencies()
+				+ " , skipped " + dss.getSkippedDependencies());
+		getLog().info(" " + getProject().getFilters().size() + " , getDependencyArtifacts "
+				+ getProject().getDependencyArtifacts().size());
+		Set<Artifact> projartifacts = getProject().getArtifacts();
+		getLog().info("project  " + getProject().getDependencies().size());
+
 		if (!useRepositoryLayout) {// 直接copy
 			for (Artifact artifact : artifacts) {
 				copyArtifact(artifact, isStripVersion(), this.prependGroupId, this.useBaseVersion,
