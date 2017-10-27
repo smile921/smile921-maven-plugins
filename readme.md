@@ -17,4 +17,4 @@
 				</configuration>
 			</plugin>
 ```			
-###  使用 mvn clean org.smile921:smile921-maven-plugin:genrepo
+###  使用 mvn clean smile921:genrepo
