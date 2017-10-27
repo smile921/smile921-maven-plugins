@@ -19,3 +19,6 @@
 ```			
 ###  使用 mvn clean smile921:genrepo
 > mvn clean dependency:copy-dependencies -Dmdep.useRepositoryLayout=true -Dmdep.addParentPoms=true -Dmdep.copyPom=true
+### 注意测试结果显示
+注解中 requiresDependencyResolution = ResolutionScope.TEST, // 影响的是 getProject().getArtifacts()的结果
+这个必须要否则默认是 ResolutionScope.NONE 则结果集是空的
