@@ -66,12 +66,12 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 	 */
 	@Parameter(property = "mdep.useBaseVersion", defaultValue = "true")
 	protected boolean useBaseVersion = true;
-	
-    @Parameter( property = "outputDirectory", defaultValue = "${project.build.directory}/repo" )
-    protected File outputDirectory;
-    
-    @Parameter( property = "mdep.useRepositoryLayout", defaultValue = "true" )
-    protected boolean useRepositoryLayout;
+
+	@Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/repo")
+	protected File outputDirectory;
+
+	@Parameter(property = "mdep.useRepositoryLayout", defaultValue = "true")
+	protected boolean useRepositoryLayout;
 
 	/**
 	 * Add parent poms to the list of copied dependencies (both current project pom
@@ -103,11 +103,12 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 			f.mkdirs();
 		}
 		String target = f.getAbsolutePath();
-		System.out.println(target);		 
-
+		System.out.println(target);
+		getLog().info("failOnMissingClassifierArtifact: " + failOnMissingClassifierArtifact + "   addParentPoms : "
+				+ addParentPoms);
 		DependencyStatusSets dss = getDependencySets(this.failOnMissingClassifierArtifact, addParentPoms);
 		Set<Artifact> artifacts = dss.getResolvedDependencies();
-		getLog().info("dependencies total is "+ artifacts.size());
+		getLog().info("dependencies total is " + artifacts.size());
 		if (!useRepositoryLayout) {// 直接copy
 			for (Artifact artifact : artifacts) {
 				copyArtifact(artifact, isStripVersion(), this.prependGroupId, this.useBaseVersion,
@@ -376,7 +377,5 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 	public void setIgnorePermissions(boolean ignorePermissions) {
 		this.ignorePermissions = ignorePermissions;
 	}
-	
-	
 
 }
