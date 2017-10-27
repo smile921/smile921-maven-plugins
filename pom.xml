@@ -4,10 +4,10 @@
 
 	<groupId>org.smile921</groupId>
 	<artifactId>smile921-maven-plugin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>smile921.maven.plugin Maven Plugin</name>
+	<name>smile921 Maven Plugin</name>
 
 	<!-- FIXME change it to the project's website -->
 	<url>http://maven.apache.org</url>
@@ -83,7 +83,7 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<goalPrefix>smile921.maven.plugin</goalPrefix>
+					<goalPrefix>smile921</goalPrefix>
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 				</configuration>
 				<executions>

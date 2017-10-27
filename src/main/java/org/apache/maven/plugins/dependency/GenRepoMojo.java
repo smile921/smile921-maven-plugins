@@ -103,14 +103,11 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 			f.mkdirs();
 		}
 		String target = f.getAbsolutePath();
-		System.out.println(target);
-		File repo = new File(target + "/" + repofolder);
-		if (!repo.exists()) {
-			repo.mkdir();
-		}
+		System.out.println(target);		 
 
 		DependencyStatusSets dss = getDependencySets(this.failOnMissingClassifierArtifact, addParentPoms);
 		Set<Artifact> artifacts = dss.getResolvedDependencies();
+		getLog().info("dependencies total is "+ artifacts.size());
 		if (!useRepositoryLayout) {// 直接copy
 			for (Artifact artifact : artifacts) {
 				copyArtifact(artifact, isStripVersion(), this.prependGroupId, this.useBaseVersion,
@@ -119,7 +116,7 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 		} else { // 按照目录结构cpoy
 			ProjectBuildingRequest buildingRequest = getRepositoryManager()
 					.setLocalRepositoryBasedir(session.getProjectBuildingRequest(), outputDirectory);
-
+			getLog().info("[按照仓库的目录结构 copy]");
 			for (Artifact artifact : artifacts) {
 				installArtifact(artifact, buildingRequest);
 			}
@@ -132,7 +129,6 @@ public class GenRepoMojo extends AbstractFromDependenciesMojo {
 		if (isCopyPom() && !useRepositoryLayout) {
 			copyPoms(getOutputDirectory(), artifacts, this.stripVersion);
 			copyPoms(getOutputDirectory(), skippedArtifacts, this.stripVersion, this.stripClassifier); // Artifacts
-																										// poms
 		}
 
 	}
